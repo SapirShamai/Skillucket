@@ -27,7 +27,7 @@ urlpatterns = [
     path("api/v1/schema/swagger-ui/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),
     path('', include('skillucketApp.urls')),
     path('api/', include('skillucketAPIs.urls', namespace='api')),
-    path('contact/', include('skillucketContactForm.urls')),
+
 ]
 
 if settings.DEBUG:

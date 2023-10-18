@@ -1,36 +1,14 @@
-{% extends 'base.html' %}
-{% load static %}
-
-
-{% block title %}Home Page{% endblock %}
-
+{% extends "base.html" %}
 {% block content %}
-
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <link rel="stylesheet" href="{% static 'skillucketApp/css/custom.css' %}">
-</head>
-<body>
-    <header class="profile-header">
-        <h1>User Profile</h1>
-    </header>
-
-    <nav>
-        <ul>
-            <li><a href="{% url 'home' %}">Home</a></li>
-            <li><a href="{% url 'profile' %}">Profile</a></li>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
         </ul>
-    </nav>
-    <main>
-        <h2>Home Page</h2>
-        <p>This is the home page content.</p>
-        <button type="button" class="btn btn-primary">Learn More</button>
+    {% endif %}
+    <div class="container">
+        <h2>Future content will come here</h2>
+    </div>
 
-    </main>
-</body>
-</html>
-{% endblock %}
-
+{% endblock content %}
