@@ -1,21 +1,27 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>Your matches:</h1>
-    {% for skill, data_list in matching_data.items %}
-        <h2>
-            Skill: {{ skill }}
-            <br>
-            {% for dict in data_list %}
-                <h3>
-                    Username: {{ dict.user.username }}
-                    <br>
-                    Proficiency level: {{ dict.user_skill.proficiency_level }}
-                    <br>
-                    Notes: {{ dict.user_skill.notes }}
-                </h3>
-                <img class="rounded-circle account-img" src="{{ dict.user.profile.image.url }}">
-            {% endfor %}
-        </h2>
-    {% endfor %}
+<div class="container mt-5">
+    <legend class="border-bottom mb-4">Your Bucket List Matches:</legend>
 
+    {% for skill, data_list in matching_data.items %}
+        <div class="mt-4">
+            <h2>
+                Skill: {{ skill }}
+                <h2>Matching Profiles:</h2>
+                <div class="row mt-3">
+                {% for dict in data_list %}
+                    <h3>
+                        Username: {{ dict.user.username }}
+
+                        Proficiency level: {{ dict.user_skill.proficiency_level }}
+
+                        Notes: {{ dict.user_skill.notes }}
+                    </h3>
+                    <img class="rounded-circle account-img" src="{{ dict.user.profile.image.url }}">
+                {% endfor %}
+                </div>
+            </h2>
+        </div>
+    {% endfor %}
+</div>
 {% endblock content %}

@@ -26,6 +26,8 @@ def home_view(request):
     return render(request, "home.html")
 
 # Views related to user management
+
+
 @login_required
 def profile_view(request):
     if request.method == 'POST':
@@ -119,31 +121,31 @@ def add_skills(request):
     return render(request, "add_skills.html", {"form": form})
 
 
-@login_required
-def edit_profile(request):
-    """
-        Handle editing a user's profile.
-    Returns:
-            HttpResponse: If the request is a GET, the profile editing form is rendered as an HttpResponse.
-                          If the request is a POST and profile update is successful, the user is redirected to the profile page.
-                          If the request is a POST and profile update fails, the profile editing form with error messages is returned.
-
-    """
-    if request.method == "POST":
-        form = ProfileForm(request.POST, instance=request.user.profile)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Your profile has been updated.")
-            return redirect(
-                "profile"
-            )  # Redirect to the profile page after successful update
-        else:
-            messages.error(request, "Please correct the errors below.")
-    else:
-        form = ProfileForm(instance=request.user.profile)
-
-    return render(request, "edit_profile.html", {"form": form})
-
+# @login_required
+# def edit_profile(request):
+#     """
+#         Handle editing a user's profile.
+#     Returns:
+#             HttpResponse: If the request is a GET, the profile editing form is rendered as an HttpResponse.
+#                           If the request is a POST and profile update is successful, the user is redirected to the profile page.
+#                           If the request is a POST and profile update fails, the profile editing form with error messages is returned.
+#
+#     """
+#     if request.method == "POST":
+#         form = ProfileForm(request.POST, instance=request.user.profile)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, "Your profile has been updated.")
+#             return redirect(
+#                 "profile"
+#             )  # Redirect to the profile page after successful update
+#         else:
+#             messages.error(request, "Please correct the errors below.")
+#     else:
+#         form = ProfileForm(instance=request.user.profile)
+#
+#     return render(request, "edit_profile.html", {"form": form})
+#
 
 def logout_view(request):
     """
@@ -156,6 +158,8 @@ def logout_view(request):
     return redirect("home")
 
 # Views related to user_skills
+
+
 @method_decorator(login_required, name='dispatch')
 class UserSkillsListView(ListView):
     model = UserSkill
