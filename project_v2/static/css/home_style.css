@@ -82,6 +82,26 @@ h1 {
     margin-bottom: 20px;
 }
 
-register {
-    margin_left: 50px;
+h2 {
+    text-transform: capitalize;
+    letter-spacing: 1.5px;
+    text-shadow: 3px 3px 5px #aaa;
+}
+
+h4 {
+    text-transform: capitalize;
+    letter-spacing: 1.5px;
+    text-shadow: 3px 3px 5px #aaa;
+}
+
+.card-img-top.rounded-circle.account-img.fixed-size-img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;   /* ensures image covers the space without stretching */
+}
+
+hr.gradient {
+    height: 4px;
+    background: linear-gradient(to right, #f06, #9f6);
+    border: none;
 }

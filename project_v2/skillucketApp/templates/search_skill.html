@@ -7,22 +7,38 @@
             {% endfor %}
         </ul>
     {% endif %}
-    <h1>Skill search matches:</h1>
+
+<div class="container mt-5">
+    <h2>Search Result</h2>
+    <hr class="gradient">
+
     {% for skill, data_list in matching_data.items %}
-        <h2>
-            Skill: {{ skill }}
-            <br>
-            {% for dict in data_list %}
-                <h3>
-                    Username: {{ dict.user.username }}
-                    <br>
-                    Proficiency level: {{ dict.user_skill.proficiency_level }}
-                    <br>
-                    Notes: {{ dict.user_skill.notes }}
-                </h3>
-                <img class="rounded-circle account-img" src="{{ dict.user.profile.image.url }}">
-            {% endfor %}
-        </h2>
+        <div class="mt-4">
+            <h2 class="text-center">{{ skill }}</h2>
+                    <div class="row mt-4 d-flex">
+                    {% for dict in data_list %}
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <div class="d-flex justify-content-center align-items-center mt-3">
+                                    <img class="card-img-top rounded-circle account-img fixed-size-img" src="{{ dict.user.profile.image.url }}">
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        Username: {{ dict.user.username }}
+                                    </h5>
+                                    <p class="card-text">
+                                        Proficiency level: {{ dict.user_skill.proficiency_level }}
+                                        Notes: {{ dict.user_skill.notes }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    </div>
+
+        </div>
+        <hr class="gradient">
     {% endfor %}
+</div>
 
 {% endblock content %}
