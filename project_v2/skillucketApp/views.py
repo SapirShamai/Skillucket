@@ -19,6 +19,7 @@ from .models.user_skill import UserSkill
 from .models.bucket_skill import BucketSkill
 from .models.skill import Skill
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from .forms.add_skill import BucketSkillForm
 
 
 def home_view(request):
@@ -97,65 +98,14 @@ def login_view(request):
     return render(request, "login_v4.html", {"form": form})
 
 
-def add_skills(request):
-    """
-    Handle adding skills to a user's profile.
-    Returns:
-            HttpResponse: If the request is a GET, the skill addition form is rendered as an HttpResponse.
-                          If the request is a POST and skill addition is successful, a success message is returned.
-                          If the request is a POST and skill addition fails, the skill addition form with error messages is returned.
-    """
-    if request.method == "POST":
-        form = SkillForm(request.POST)
-        if form.is_valid():
-            skill = form.save(commit=False)
-            skill.user = request.user  # Associate the skill with the current user
-            skill.save()
-            messages.success(request, "Skill added successfully.")
-            return redirect("profile")
-        else:
-            messages.error(request, "Please correct the errors below.")
-    else:
-        form = SkillForm()
-
-    return render(request, "add_skills.html", {"form": form})
-
-
-# @login_required
-# def edit_profile(request):
-#     """
-#         Handle editing a user's profile.
-#     Returns:
-#             HttpResponse: If the request is a GET, the profile editing form is rendered as an HttpResponse.
-#                           If the request is a POST and profile update is successful, the user is redirected to the profile page.
-#                           If the request is a POST and profile update fails, the profile editing form with error messages is returned.
-#
-#     """
-#     if request.method == "POST":
-#         form = ProfileForm(request.POST, instance=request.user.profile)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, "Your profile has been updated.")
-#             return redirect(
-#                 "profile"
-#             )  # Redirect to the profile page after successful update
-#         else:
-#             messages.error(request, "Please correct the errors below.")
-#     else:
-#         form = ProfileForm(instance=request.user.profile)
-#
-#     return render(request, "edit_profile.html", {"form": form})
-#
-
 def logout_view(request):
     """
         Handle user logout.
         This view logs the user out and redirects them to the home page.
-
-
     """
     logout(request)
     return redirect("home")
+
 
 # Views related to user_skills
 
@@ -228,7 +178,7 @@ class BucketSkillsListView(ListView):
 @method_decorator(login_required, name='dispatch')
 class BucketSkillsCreateView(CreateView):
     model = BucketSkill
-    fields = ['skill', 'target_date', 'notes']
+    form_class = BucketSkillForm
     template_name = "bucket_skills_create.html"
     success_url = reverse_lazy('bucket_skills')
 
@@ -266,6 +216,9 @@ class BucketSkillDeleteView(DeleteView):
         if obj.user != self.request.user:
             raise Http404("Bucket Skill not found")
         return obj
+
+
+#  matches related views:
 
 
 @login_required

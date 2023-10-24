@@ -1,11 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>Edit your skill:</h1>
+<div class="container mt-5">
+    <h2>Edit your skill</h2>
+    <hr class="gradient">
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Save</button>
+        <button type="submit" class="btn btn-outline-primary">Save</button>
     </form>
-    <a href="{% url 'user_skills' %}">Back to your skills list</a>
+    <hr class="gradient">
 
+    <a href="{% url 'user_skills' %}">Back to your skills list</a>
+   <hr class="gradient">
+</div>
 {% endblock content %}

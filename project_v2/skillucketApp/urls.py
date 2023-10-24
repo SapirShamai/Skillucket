@@ -9,6 +9,7 @@ from .views import (
     BucketSkillsListView, BucketSkillsCreateView, BucketSkillUpdateView, BucketSkillDeleteView
 )
 
+# todo: add password change with email sending
 
 urlpatterns = [
     path("", views.home_view, name="home"),
@@ -32,8 +33,6 @@ urlpatterns = [
         PasswordChangeView.as_view(success_url=reverse_lazy("password_change_done")),
         name="password_change",
     ),
-    # path("edit_profile/", views.edit_profile, name="edit_profile"),
-    path("add_skills/", views.add_skills, name="add_skills"),
 ]
 
 

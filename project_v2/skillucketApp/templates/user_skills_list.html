@@ -7,9 +7,11 @@
     <div class="row mt-4">
     {% for user_skill in user_skills %}
             <div class="col-md-4 mb-4">
-                    <div class="card h-200 d-flex flex-column justify-content-between">
+                    <div class="card h-100 d-flex flex-column justify-content-between">
                         <div>
-                            <h4 class="text-center mt-3">{{ user_skill.skill }}</h4>
+                            <div class="text-center mt-3">
+                                <h4 class="rounded-box">{{ user_skill.skill }}</h4>
+                            </div>
                             <p class="px-3">Proficiency Level: {{ user_skill.proficiency_level }}</p>
                             <p class="px-3">Notes: {{ user_skill.notes }}</p>
                         </div>
@@ -27,7 +29,7 @@
 
     {% endfor %}
     </div>
-
+    <hr class="gradient">
     <div class="text-center mt-5">
             <a href="{% url 'user_skills_create' %}" class="btn btn-lg btn-outline-success px-5 py-2">Add Skills</a>
     </div>
