@@ -23,8 +23,37 @@ from .forms.add_skill import BucketSkillForm
 
 
 def home_view(request):
+    """  the template contains image carousel, this function sends the info for thr template to loop on
+    instead of repeating it in the html file """
 
-    return render(request, "home.html")
+    content = ["Welcome to Skillucket!",
+               "The best place to acquire the skills you have always desired",
+               "Our mission is to foster human connections through the joy of learning", "Simply create an account, "
+               "populate your bucket list with skills you are eager to learn, and discover your matches. "]
+
+    slides = [{
+            'image': 'images/homepage/computer.png',
+            'title': 'First slide',
+            'content': content
+        },
+        {
+            'image': 'images/homepage/diy.png',
+            'title': 'Second slide',
+            'content': content
+        },
+        {
+            'image': 'images/homepage/painting.png',
+            'title': 'Third slid',
+            'content': content
+        },
+        {
+            'image': 'images/homepage/programing.png',
+            'title': 'Fourth slid',
+            'content': content
+        }
+    ]
+    return render(request, "home.html", {'slides': slides})
+
 
 # Views related to user management
 

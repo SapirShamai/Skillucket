@@ -9,31 +9,31 @@
     </ul>
 {% endif %}
 <div class="container-fluid">
-    <div id="homepageCarousel" class="carousel slide" data-ride="carousel">
-        <ol class="carousel-indicators">
-            <li data-target="#homepageCarousel" data-slide-to="0" class="active"></li>
-            <li data-target="#homepageCarousel" data-slide-to="1"></li>
-            <li data-target="#homepageCarousel" data-slide-to="2"></li>
-        </ol>
+    <div id="homepageCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img class="d-block w-100" src="{% static 'images/homepage/computer.png' %}" alt="First slide">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Title</h5>
-                    <p> some content about the website</p>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <img class="d-block w-100" src="{% static 'images/homepage/diy.png' %}" alt="Second slide">
-            </div>
-            <div class="carousel-item">
-                <img class="d-block w-100" src="{% static 'images/homepage/painting.png' %}" alt="Third slide">
-            </div>
+            {% for slide in slides %}
+                <div class="carousel-item {% if forloop.first %} active {% endif %}">
+                    <img class="d-block w-100" src="{% static slide.image %}" alt="{{slide.title}}">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h1 class="text-dark">{{slide.content.0}}</h1>
+                        <h3 class="text-dark">{{slide.content.1}}</h3>
+                        <p class="text-dark">{{slide.content.2}}</p>
+                        <p class="text-dark">{{slide.content.3}}</p>
 
-            <a class="carousel-control-prev" href="#homepageCarousel" role="button" data-slide="prev">
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+<!--            carousel control:-->
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#homepageCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#homepageCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
     </div>
 </div>
