@@ -1,11 +1,30 @@
 {% extends "base.html" %}
 {% block content %}
 
-    <div class="container">
-        <form method="post" enctype="multipart/form-data">
+    <div class="container mt-5">
+        <h2>Register</h2>
+        <hr class="gradient">
+        <form method="post" enctype="multipart/form-data" class="mt-5 mb-5">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Register</button>
+
+            <div class="mb-3">
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% for field in form %}
+                  <div class="form-group">
+                    <label for="{{ field.id_for_label }}" class="col-sm-2 col-form-label">{{ field.label }}</label>
+                    {{ field }}
+                  </div>
+                {% endfor %}
+            </div>
+            <button class="btn btn-outline-primary" type="submit">Register</button>
         </form>
+        <hr class="gradient">
     </div>
+
 {% endblock %}

@@ -8,8 +8,6 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import logout
-from skillucketApp.forms.skills_profile import ProfileForm
-from skillucketApp.forms.skills_profile import SkillForm
 from .models.profile import Profile
 from .forms.user_and_profile import UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
@@ -23,8 +21,10 @@ from .forms.add_skill import BucketSkillForm
 
 
 def home_view(request):
-    """  the template contains image carousel, this function sends the info for thr template to loop on
-    instead of repeating it in the html file """
+    """
+    the template contains image carousel, this function sends the info for thr template to loop on
+    instead of repeating it in the html file
+    """
 
     content = ["Welcome to Skillucket!",
                "The best place to acquire the skills you have always desired",
@@ -60,6 +60,10 @@ def home_view(request):
 
 @login_required
 def profile_view(request):
+    """
+    when gets POST request responsible for update the user profile
+    GET request is loading bound form with existing data
+    """
     if request.method == 'POST':
         user_form = UserUpdateForm(request.POST, instance=request.user)
         profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
@@ -78,7 +82,8 @@ def profile_view(request):
 
 
 def register(request):
-    """Register view handles get and post requests.
+    """
+    Register view handles get and post requests.
     Register new user to db and create automatically a profile for the user.
     If a profile pic was sent in the registration form, it is added to the profile.
     After successful registration, redirect to login.
@@ -141,6 +146,9 @@ def logout_view(request):
 
 @method_decorator(login_required, name='dispatch')
 class UserSkillsListView(ListView):
+    """
+    django build in view for get all the skills of a specific user
+    """
     model = UserSkill
     template_name = 'user_skills_list.html'
     context_object_name = 'user_skills'
@@ -151,6 +159,10 @@ class UserSkillsListView(ListView):
 
 @method_decorator(login_required, name='dispatch')
 class UserSkillsCreateView(CreateView):
+    """
+      django build in view for create skill of a specific user
+      sending post request and django creates the form automatically
+      """
     model = UserSkill
     fields = ['skill', 'proficiency_level', 'notes']
     template_name = "user_skills_create.html"
@@ -163,6 +175,9 @@ class UserSkillsCreateView(CreateView):
 
 @method_decorator(login_required, name='dispatch')
 class UserSkillUpdateView(UpdateView):
+    """
+      django build in view for update skill of a specific user
+      """
     model = UserSkill
     fields = ['skill', 'proficiency_level', 'notes']
     template_name = 'user_skill_update.html'
@@ -181,6 +196,9 @@ class UserSkillUpdateView(UpdateView):
 
 @method_decorator(login_required, name='dispatch')
 class UserSkillDeleteView(DeleteView):
+    """
+      django build in view for delete skill of a specific user
+      """
     model = UserSkill
     template_name = 'userskill_confirm_delete.html'
     success_url = reverse_lazy('user_skills')
@@ -196,6 +214,9 @@ class UserSkillDeleteView(DeleteView):
 
 @method_decorator(login_required, name='dispatch')
 class BucketSkillsListView(ListView):
+    """
+      django build in view for get all the bucket skills of a specific user
+      """
     model = BucketSkill
     template_name = 'bucket_skills_list.html'
     context_object_name = 'bucket_skills'
@@ -206,6 +227,10 @@ class BucketSkillsListView(ListView):
 
 @method_decorator(login_required, name='dispatch')
 class BucketSkillsCreateView(CreateView):
+    """
+        django build in view for create  bucket skill of a specific user
+        sending post request and django creates the form automatically
+        """
     model = BucketSkill
     form_class = BucketSkillForm
     template_name = "bucket_skills_create.html"
@@ -218,6 +243,9 @@ class BucketSkillsCreateView(CreateView):
 
 @method_decorator(login_required, name='dispatch')
 class BucketSkillUpdateView(UpdateView):
+    """
+      django build in view for update bucket skill of a specific user
+      """
     model = BucketSkill
     fields = ['skill', 'target_date', 'notes']
     template_name = 'bucket_skills_update.html'
@@ -236,6 +264,9 @@ class BucketSkillUpdateView(UpdateView):
 
 @method_decorator(login_required, name='dispatch')
 class BucketSkillDeleteView(DeleteView):
+    """
+      django build in view for delete  bucket skill of a specific user
+      """
     model = BucketSkill
     template_name = 'bucketskill_confirm_delete.html'
     success_url = reverse_lazy('bucket_skills')
@@ -248,7 +279,8 @@ class BucketSkillDeleteView(DeleteView):
 
 
 #  matches related views:
-
+# todo: finish dock strings from here down, fix changing the username and email in the profile page to not be
+#  possible to have the same name of another existing user, add forgot password function.
 
 @login_required
 def list_matches_view(request):

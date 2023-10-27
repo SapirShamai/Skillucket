@@ -1,11 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>Login</h1>
-    <div class="container">
-        <form method="post" enctype="multipart/form-data">
+
+    <div class="container mt-5">
+        <h2>Login</h2>
+        <hr class="gradient">
+             <form method="post" enctype="multipart/form-data" class="mt-5 mb-5">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Login</button>
+            <div class="mb-3">
+                {% for field in form %}
+                  <div class="form-group">
+                    <label for="{{ field.id_for_label }}" class="col-sm-2 col-form-label">{{ field.label }}</label>
+                    {{ field }}
+                  </div>
+                {% endfor %}
+            </div>
+            <button class="btn btn-outline-primary" type="submit">Login</button>
         </form>
+        <hr class="gradient">
+
     </div>
 {% endblock %}

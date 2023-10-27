@@ -13,6 +13,7 @@
         <button type="button" class="btn btn-outline-primary btn-lg mb-2"><a href="{% url 'bucket_skills' %}">Bucket List</a></button>
       </div>
   </div>
+
   <form method="POST" enctype="multipart/form-data" class="mt-5">
     {% csrf_token %}
     <fieldset class="form-group">
@@ -22,7 +23,7 @@
         <div class="mb-3">
             {% for field in user_form %}
               <div class="form-group">
-                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                <label for="{{ field.id_for_label }}" class="col-sm-2 col-form-label">{{ field.label }}</label>
                 {{ field }}
               </div>
             {% endfor %}
