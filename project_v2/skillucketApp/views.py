@@ -65,8 +65,16 @@ def profile_view(request):
     GET request is loading bound form with existing data
     """
     if request.method == 'POST':
+        # update both the user and the user's profile
         user_form = UserUpdateForm(request.POST, instance=request.user)
         profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+
+        # check if unique username and email
+        if User.objects.exclude(id=request.user.id).filter(username=user_form.data['username']).exists():
+            user_form.add_error('username', 'This username is already taken')
+        if User.objects.exclude(id=request.user.id).filter(email=user_form.data['email']).exists():
+            user_form.add_error('email', 'This email is already in use')
+
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
@@ -105,7 +113,7 @@ def register(request):
                 else:
                     return HttpResponse("Failed to create user")
             except IntegrityError:
-                form.add_error(None, "Username or email already exists")
+                form.add_error(None, "Username or email already exists in our system, please try to choose another one")
     else:
         form = RegisterForm()
 
@@ -279,11 +287,14 @@ class BucketSkillDeleteView(DeleteView):
 
 
 #  matches related views:
-# todo: finish dock strings from here down, fix changing the username and email in the profile page to not be
-#  possible to have the same name of another existing user, add forgot password function.
+# todo: add forgot password function.
 
 @login_required
 def list_matches_view(request):
+    """
+    first get the bucket skills of the auth user than get all the users that have the same skill on their skill list
+    return a list of dicts with the matching user and his skill that the match is based on
+    """
     user = request.user
     wanted_skills = Skill.objects.filter(bucketskill__user=user)  # getting the skills object through bucket_skill
     matching_users = User.objects.filter(userskill__skill__in=wanted_skills).distinct().exclude(id=user.id)
@@ -305,6 +316,11 @@ def list_matches_view(request):
 
 @login_required
 def search_skill_view(request):
+    """
+    get the search term from the query params, first retrieve all the skills that contain the search term,
+    retrieve all the users  that have the search term skill through their user_skill
+    return a list of dicts with the matching user and his skill that the match is based on
+    """
     params = request.GET.get('skill', '')
     if not params:
         messages.error(request, 'Please enter a search query.')

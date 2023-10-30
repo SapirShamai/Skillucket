@@ -21,10 +21,16 @@
         <hr class="gradient">
 
         <div class="mb-3">
+
             {% for field in user_form %}
               <div class="form-group">
                 <label for="{{ field.id_for_label }}" class="col-sm-2 col-form-label">{{ field.label }}</label>
                 {{ field }}
+                  {% if field.errors %}
+                      <div class="alert alert-danger">
+                        {{ field.errors.0 }}
+                      </div>
+                  {% endif %}
               </div>
             {% endfor %}
         </div>

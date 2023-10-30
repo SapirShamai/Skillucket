@@ -1,7 +1,6 @@
 from django.urls import path
+from django.contrib.auth import views as auth_views
 from . import views
-from django.contrib.auth.views import PasswordChangeView
-from django.urls import reverse_lazy
 from django.conf import settings
 from django.conf.urls.static import static
 from .views import (
@@ -9,7 +8,6 @@ from .views import (
     BucketSkillsListView, BucketSkillsCreateView, BucketSkillUpdateView, BucketSkillDeleteView
 )
 
-# todo: add password change with email sending
 
 urlpatterns = [
     path("", views.home_view, name="home"),
@@ -27,12 +25,21 @@ urlpatterns = [
     path("bucket_skills/<int:pk>", BucketSkillUpdateView.as_view(), name='bucket_skill_update'),
     path("bucket_skills/<int:pk>/delete", BucketSkillDeleteView.as_view(), name='bucket_skill_delete'),
     path('search/', views.search_skill_view, name='search'),
+    path('password_reset/',
+         auth_views.PasswordResetView.as_view(template_name='password_rest.html'),
+         name='password_reset'),
+    path('password_reset/done/',
+         auth_views.PasswordResetDoneView.as_view(template_name='password_reset_done.html'),
+         name='password_reset_done'),
+    path('password_reset_confirm/<uidb64>/<token>',
+         auth_views.PasswordResetConfirmView.as_view(template_name='password_reset_confirm.html'),
+         name='password_reset_confirm'),
+    path('password_reset_complete/',
+         auth_views.PasswordResetCompleteView.as_view(template_name='password_reset_complete.html'),
+         name='password_reset_complete'),
 
-    path(
-        "password_change/",
-        PasswordChangeView.as_view(success_url=reverse_lazy("password_change_done")),
-        name="password_change",
-    ),
+
+
 ]
 
 

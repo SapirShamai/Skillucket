@@ -160,3 +160,10 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'An API for connecting users based on skill acquisition and sharing',
     'VERSION': '1.0.0',
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
