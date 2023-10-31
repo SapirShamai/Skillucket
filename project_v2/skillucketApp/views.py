@@ -18,6 +18,8 @@ from .models.bucket_skill import BucketSkill
 from .models.skill import Skill
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .forms.add_skill import BucketSkillForm
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 
 
 def home_view(request):
@@ -101,19 +103,29 @@ def register(request):
         form = RegisterForm(request.POST, request.FILES)
         if form.is_valid():
             form_data = form.cleaned_data
+            password = form_data['password']
+
+            # validated the password with default validations from setting.py:
             try:
-                user = User.objects.create_user(username=form_data["username"], password=form_data["password"], email=form_data["email"])
-                if user:
-                    if "image" in request.FILES:
-                        image = request.FILES["image"]
-                        profile = Profile.objects.get(user=user)
-                        profile.image = image
-                        profile.save()
-                    return redirect("login")
-                else:
-                    return HttpResponse("Failed to create user")
-            except IntegrityError:
-                form.add_error(None, "Username or email already exists in our system, please try to choose another one")
+                validate_password(password)
+            except ValidationError as error:
+                form.add_error('password', error)
+            if not form.has_error('password'):
+                try:
+                    user = User.objects.create_user(username=form_data["username"], password=form_data["password"],
+                                                    email=form_data["email"])
+                    if user:
+                        if "image" in request.FILES:
+                            image = request.FILES["image"]
+                            profile = Profile.objects.get(user=user)
+                            profile.image = image
+                            profile.save()
+                        return redirect("login")
+                    else:
+                        return HttpResponse("Failed to create user")
+                except IntegrityError:
+                    form.add_error(None,
+                                   "Username or email already exists in our system, please try to choose another one")
     else:
         form = RegisterForm()
 
@@ -143,10 +155,28 @@ def login_view(request):
 def logout_view(request):
     """
         Handle user logout.
-        This view logs the user out and redirects them to the home page.
+        This  django build in view logs the user out and redirects them to the home page.
     """
     logout(request)
     return redirect("home")
+
+
+@login_required
+def delete_account_view(request):
+    """
+    take POST request
+    delete users account from db with a password confirm
+    """
+    if request.method == 'POST':
+        # compare with password from post request:
+        if request.user.check_password(request.POST['password']):
+            request.user.delete()
+            logout(request)
+            messages.success(request, 'your account has been deleted.')
+            return redirect('home')
+        else:
+            messages.error(request, 'Incorrect password, Account deletion canceled.')
+    return render(request, 'account_delete_confirm.html')
 
 
 # Views related to user_skills
@@ -287,7 +317,6 @@ class BucketSkillDeleteView(DeleteView):
 
 
 #  matches related views:
-# todo: add forgot password function.
 
 @login_required
 def list_matches_view(request):

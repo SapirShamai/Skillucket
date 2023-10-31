@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Confirm Account Deletion</h2>
+    <hr class="gradient">
+    <p>Are you sure you want to delete your account?</p>
+
+     {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+
+   <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <input type="password" class="form-control" name="password" placeholder="Enter your password to confirm">
+        </div>
+        <button class="btn btn-danger mt-2" type="submit">Delete Account</button>
+    </form>
+</div>
+{% endblock %}
