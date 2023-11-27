@@ -25,7 +25,10 @@ And once in the postgres:
 CREATE DATABASE your_database_name;
 \q
 ```
-Next create a file named .env to which copy and fill in the template:
+Next create a file named .env to which copy and fill in the template: 
+
+(or simply copy and configure .env.sample file from the project)
+
 ```
 export SECRET_KEY='your_secret_key'
 export DB_NAME='your_database_name'
