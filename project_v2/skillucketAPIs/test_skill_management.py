@@ -18,10 +18,7 @@ from skillucketAPIs.serializers.skill_management_serializers import (
 
 class CategoryViewTests(APITestCase):
     def setUp(self):
-        # Set up a test client
         self.client = APIClient()
-
-        # Create a user (optional)
         self.user = User.objects.create_user(username='testuser', password='testpass')
 
         # Create some categories for testing
